@@ -58,6 +58,26 @@ return s;
 
 }
 
+function romanToNumber(s){
+
+let map={I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+
+let n=0;
+
+for(let i=0;i<s.length;i++){
+
+let cur=map[s[i]];
+let next=map[s[i+1]];
+
+if(next>cur) n-=cur;
+else n+=cur;
+
+}
+
+return n;
+
+}
+
 function pandu(nums){
 
 let a=nums.split(" ");
@@ -69,6 +89,53 @@ let rest=a.slice(1).join("|");
 let b64=btoa(rest);
 
 return roman(first)+"."+b64;
+
+}
+
+function reversePanda(nums){
+
+let out="";
+
+for(let n of nums){
+
+n=parseInt(n);
+
+for(let i=0;i<26;i++){
+
+let p=i+1;
+let r=27-p;
+
+let val;
+
+if(p<=13) val=p*r;
+else val=(p*r)-r;
+
+if(val==n){
+
+out+=ABC[i];
+break;
+
+}
+
+}
+
+}
+
+return out;
+
+}
+
+function reversePandu(pd){
+
+let parts=pd.split(".");
+
+let first=romanToNumber(parts[0]);
+
+let rest=atob(parts[1]).split("|");
+
+let nums=[first,...rest];
+
+return reversePanda(nums);
 
 }
 
@@ -210,6 +277,8 @@ let e=rabbitDec(r,k2);
 
 let pd=aesECBdec(e,k1);
 
-document.getElementById("result").value=pd;
+let text=reversePandu(pd);
+
+document.getElementById("result").value=text;
 
 }
